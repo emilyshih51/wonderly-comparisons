@@ -52,6 +52,8 @@ export default function NarrativeComparisonPage({ competitor }) {
       <FeatureChart
         competitorName={competitor.name}
         featureData={competitor.featureComparison}
+        aiFeatures={competitor.aiFeatures}
+        onboarding={competitor.onboarding}
       />
 
       {/* 4. OBJECTION REFRAME - Flip their strength */}

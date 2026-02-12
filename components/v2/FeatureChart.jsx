@@ -1,33 +1,67 @@
-export default function FeatureChart({ competitorName, featureData }) {
-  // Use Sanity feature data or defaults
+export default function FeatureChart({ competitorName, featureData, aiFeatures, onboarding }) {
+  // Combine all data sources into one comprehensive list
   // Sanity uses: featureName, wonderlyValue, competitorValue
   const getFeatures = () => {
+    const allFeatures = []
+
+    // Add feature comparison data
     if (featureData && featureData.length > 0) {
-      return featureData.map(item => {
+      featureData.forEach(item => {
         const wonderlyVal = item.wonderlyValue
         const competitorVal = item.competitorValue
-
-        return {
+        allFeatures.push({
           feature: item.featureName,
           wonderly: wonderlyVal === true ? '✓' : wonderlyVal === false ? '✗' : String(wonderlyVal || ''),
           competitor: competitorVal === true ? '✓' : competitorVal === false ? '✗' : String(competitorVal || ''),
-        }
+        })
       })
     }
 
-    // Default features if no Sanity data
-    return [
-      { feature: "CRM & Contact Management", wonderly: "✓", competitor: "✓" },
-      { feature: "Email Marketing", wonderly: "✓", competitor: "✓" },
-      { feature: "Website Builder", wonderly: "✓", competitor: "Add-on" },
-      { feature: "Phone System", wonderly: "✓", competitor: "Add-on" },
-      { feature: "SMS/Text Messaging", wonderly: "✓", competitor: "✓" },
-      { feature: "Online Booking", wonderly: "✓", competitor: "✓" },
-      { feature: "Invoicing & Payments", wonderly: "✓", competitor: "✓" },
-      { feature: "Workflow Automation", wonderly: "✓", competitor: "Pro plan" },
-      { feature: "Reporting & Analytics", wonderly: "✓", competitor: "✓" },
-      { feature: "Mobile App", wonderly: "✓", competitor: "✓" },
-    ]
+    // Add AI features data
+    if (aiFeatures && aiFeatures.length > 0) {
+      aiFeatures.forEach(item => {
+        const wonderlyVal = item.wonderlyValue
+        const competitorVal = item.competitorValue
+        allFeatures.push({
+          feature: item.featureName,
+          wonderly: wonderlyVal === true ? '✓' : wonderlyVal === false ? '✗' : String(wonderlyVal || ''),
+          competitor: competitorVal === true ? '✓' : competitorVal === false ? '✗' : String(competitorVal || ''),
+          category: 'AI'
+        })
+      })
+    }
+
+    // Add onboarding data
+    if (onboarding && onboarding.length > 0) {
+      onboarding.forEach(item => {
+        const wonderlyVal = item.wonderlyValue
+        const competitorVal = item.competitorValue
+        allFeatures.push({
+          feature: item.featureName,
+          wonderly: wonderlyVal === true ? '✓' : wonderlyVal === false ? '✗' : String(wonderlyVal || ''),
+          competitor: competitorVal === true ? '✓' : competitorVal === false ? '✗' : String(competitorVal || ''),
+          category: 'Setup'
+        })
+      })
+    }
+
+    // If no Sanity data at all, use defaults
+    if (allFeatures.length === 0) {
+      return [
+        { feature: "CRM & Contact Management", wonderly: "✓", competitor: "✓" },
+        { feature: "Email Marketing", wonderly: "✓", competitor: "✓" },
+        { feature: "Website Builder", wonderly: "✓", competitor: "Add-on" },
+        { feature: "Phone System", wonderly: "✓", competitor: "Add-on" },
+        { feature: "SMS/Text Messaging", wonderly: "✓", competitor: "✓" },
+        { feature: "Online Booking", wonderly: "✓", competitor: "✓" },
+        { feature: "Invoicing & Payments", wonderly: "✓", competitor: "✓" },
+        { feature: "Workflow Automation", wonderly: "✓", competitor: "Pro plan" },
+        { feature: "Reporting & Analytics", wonderly: "✓", competitor: "✓" },
+        { feature: "Mobile App", wonderly: "✓", competitor: "✓" },
+      ]
+    }
+
+    return allFeatures
   }
 
   const features = getFeatures()
@@ -35,8 +69,8 @@ export default function FeatureChart({ competitorName, featureData }) {
   // Helper to render cell content
   const renderCell = (value, isWonderly = false) => {
     const strVal = String(value || '')
-    const isPositive = strVal === '✓' || strVal.toLowerCase() === 'yes' || strVal.toLowerCase() === 'included' || value === true
-    const isNegative = strVal === '✗' || strVal.toLowerCase() === 'no' || value === false
+    const isPositive = strVal === '✓' || strVal.toLowerCase() === 'yes' || strVal.toLowerCase() === 'included' || strVal.toLowerCase() === 'free' || value === true
+    const isNegative = strVal === '✗' || strVal.toLowerCase() === 'no' || strVal.toLowerCase() === 'not available' || value === false
 
     if (isPositive) {
       return (
@@ -60,13 +94,15 @@ export default function FeatureChart({ competitorName, featureData }) {
       )
     }
 
-    // Text value (like "Add-on", "Pro plan", etc.)
+    // Text value (like "Add-on", "Pro plan", "$X/mo", etc.)
+    const isExtra = strVal.toLowerCase().includes('add-on') ||
+                    strVal.toLowerCase().includes('extra') ||
+                    strVal.toLowerCase().includes('pro') ||
+                    strVal.toLowerCase().includes('upgrade') ||
+                    strVal.match(/\$\d+/)
+
     return (
-      <span className={`text-sm ${
-        strVal.toLowerCase().includes('add-on') || strVal.toLowerCase().includes('extra') || strVal.toLowerCase().includes('pro')
-          ? 'text-amber-600 font-medium'
-          : 'text-gray-600'
-      }`}>
+      <span className={`text-sm ${isExtra ? 'text-amber-600 font-medium' : 'text-gray-600'}`}>
         {strVal}
       </span>
     )
@@ -112,6 +148,11 @@ export default function FeatureChart({ competitorName, featureData }) {
             >
               <div className="p-4 pl-6 flex items-center">
                 <span className="font-medium text-gray-700">{row.feature}</span>
+                {row.category && (
+                  <span className="ml-2 text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded">
+                    {row.category}
+                  </span>
+                )}
               </div>
               <div className="p-4 flex items-center justify-center">
                 {renderCell(row.wonderly, true)}
