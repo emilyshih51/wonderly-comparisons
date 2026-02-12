@@ -32,6 +32,7 @@ export default function ComparisonPage({ competitor }) {
         competitorName={competitor.name}
         headline={competitor.heroHeadline}
         subheadline={competitor.heroSubheadline}
+        headlineHighlight={competitor.heroHeadlineHighlight}
       />
 
       {/* Main Content */}

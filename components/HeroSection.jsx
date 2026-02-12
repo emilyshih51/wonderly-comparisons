@@ -1,13 +1,75 @@
-export default function HeroSection({ competitorName, headline, subheadline }) {
+export default function HeroSection({ competitorName, headline, subheadline, headlineHighlight }) {
+  // Function to auto-detect and highlight important parts of the headline
+  const renderHeadline = () => {
+    const text = headline || `The smarter alternative to ${competitorName}`
+
+    // If explicit highlight is provided, use it
+    if (headlineHighlight && text.includes(headlineHighlight)) {
+      const parts = text.split(headlineHighlight)
+      return (
+        <>
+          {parts[0]}
+          <span className="wonderly-text">{headlineHighlight}</span>
+          {parts[1]}
+        </>
+      )
+    }
+
+    // Auto-detect: Look for text after em dash (—) - common pattern for key selling point
+    if (text.includes('—')) {
+      const parts = text.split('—')
+      return (
+        <>
+          {parts[0]}—<span className="wonderly-text">{parts[1]}</span>
+        </>
+      )
+    }
+
+    // Auto-detect: Look for phrases starting with "Without" (case insensitive)
+    const withoutMatch = text.match(/(Without [^,.]+)/i)
+    if (withoutMatch) {
+      const parts = text.split(withoutMatch[1])
+      return (
+        <>
+          {parts[0]}
+          <span className="wonderly-text">{withoutMatch[1]}</span>
+          {parts[1]}
+        </>
+      )
+    }
+
+    // Auto-detect: Look for "No " phrases like "No Hidden Fees"
+    const noMatch = text.match(/(No [A-Z][^,.]+)/i)
+    if (noMatch) {
+      const parts = text.split(noMatch[1])
+      return (
+        <>
+          {parts[0]}
+          <span className="wonderly-text">{noMatch[1]}</span>
+          {parts[1]}
+        </>
+      )
+    }
+
+    // Auto-detect: Look for "Free" as a standalone word
+    if (text.match(/\bFree\b/)) {
+      return text.split(/(\bFree\b)/).map((part, i) =>
+        part === 'Free' ? <span key={i} className="wonderly-text">Free</span> : part
+      )
+    }
+
+    return text
+  }
+
   return (
     <div className="wonderly-bg pt-8 pb-6">
       <div className="max-w-4xl mx-auto px-6 text-center">
         {/* Competitor Name Label */}
         <p className="text-sm text-gray-500 mb-3">Wonderly vs. {competitorName}</p>
 
-        {/* Headline - fully dynamic from Clay/Sanity */}
+        {/* Headline - fully dynamic from Clay/Sanity with optional highlight */}
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
-          {headline || `The smarter alternative to ${competitorName}`}
+          {renderHeadline()}
         </h1>
 
         {/* Subheadline - fully dynamic from Clay/Sanity */}
