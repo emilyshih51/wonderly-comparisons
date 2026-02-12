@@ -5,17 +5,14 @@ export default function HeroSection({ competitorName, headline, subheadline }) {
         {/* Competitor Name Label */}
         <p className="text-sm text-gray-500 mb-3">Wonderly vs. {competitorName}</p>
 
-        {/* Headline - smaller */}
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 leading-tight">
-          {headline || `Keep More Revenue Without`}
+        {/* Headline - fully dynamic from Clay/Sanity */}
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
+          {headline || `The smarter alternative to ${competitorName}`}
         </h1>
-        <h2 className="text-2xl md:text-3xl font-bold wonderly-text mb-4">
-          Hidden Fees or Surprise Charges
-        </h2>
 
-        {/* Subheadline */}
+        {/* Subheadline - fully dynamic from Clay/Sanity */}
         <p className="text-sm text-gray-600 mb-4 max-w-xl mx-auto">
-          {subheadline || `Transparent pricing with no usage fees, no add-on costs, and no billing surprises—just powerful tools that scale with you.`}
+          {subheadline || `Compare features, pricing, and see why businesses are switching to Wonderly.`}
         </p>
 
         {/* Trust badge */}
