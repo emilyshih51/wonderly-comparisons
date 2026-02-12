@@ -3,6 +3,7 @@ import SimpleHeader from '../../../components/v2/SimpleHeader'
 import NarrativeHero from '../../../components/v2/NarrativeHero'
 import KeyDifferentiators from '../../../components/v2/KeyDifferentiators'
 import SimpleComparison from '../../../components/v2/SimpleComparison'
+import FeatureChart from '../../../components/v2/FeatureChart'
 import ObjectionReframe from '../../../components/v2/ObjectionReframe'
 import KnockoutVisual from '../../../components/v2/KnockoutVisual'
 import SwitcherTestimonial from '../../../components/v2/SwitcherTestimonial'
@@ -44,6 +45,12 @@ export default function NarrativeComparisonPage({ competitor }) {
       <SimpleComparison
         competitorName={competitor.name}
         pricingData={competitor.pricingTable}
+        featureData={competitor.featureComparison}
+      />
+
+      {/* 3b. FEATURE CHART - Detailed feature comparison */}
+      <FeatureChart
+        competitorName={competitor.name}
         featureData={competitor.featureComparison}
       />
 
