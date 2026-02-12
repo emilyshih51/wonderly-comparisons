@@ -1,49 +1,39 @@
 export default function KeyDifferentiators({ competitorName, pricingData }) {
   // Build differentiators from pricing data, with intelligent defaults
+  // Sanity uses: featureName, wonderlyValue, competitorValue
   const buildDifferentiators = () => {
     const differentiators = []
 
     // Try to extract pricing info
     let competitorPrice = null
-    let hasSeatPricing = false
-    let hasHiddenFees = false
-    let hasSetupTime = false
 
     if (pricingData && pricingData.length > 0) {
       // Look for price-related row
       const priceRow = pricingData.find(row =>
-        row.feature?.toLowerCase().includes('price') ||
-        row.feature?.toLowerCase().includes('cost') ||
-        row.feature?.toLowerCase().includes('monthly') ||
-        row.feature?.toLowerCase().includes('starter')
+        row.featureName?.toLowerCase().includes('price') ||
+        row.featureName?.toLowerCase().includes('cost') ||
+        row.featureName?.toLowerCase().includes('monthly') ||
+        row.featureName?.toLowerCase().includes('starter')
       )
-      if (priceRow && priceRow.competitor) {
-        const match = priceRow.competitor.match(/\$(\d+)/)
+      if (priceRow && priceRow.competitorValue) {
+        const compVal = String(priceRow.competitorValue)
+        const match = compVal.match(/\$(\d+)/)
         if (match) competitorPrice = match[1]
       }
 
-      // Look for seat-related row
-      const seatRow = pricingData.find(row =>
-        row.feature?.toLowerCase().includes('seat') ||
-        row.feature?.toLowerCase().includes('user') ||
-        row.feature?.toLowerCase().includes('team')
-      )
-      if (seatRow) hasSeatPricing = true
-
-      // Look for hidden fees row
-      const feesRow = pricingData.find(row =>
-        row.feature?.toLowerCase().includes('fee') ||
-        row.feature?.toLowerCase().includes('hidden') ||
-        row.feature?.toLowerCase().includes('add-on')
-      )
-      if (feesRow) hasHiddenFees = true
-
-      // Look for setup/onboarding row
-      const setupRow = pricingData.find(row =>
-        row.feature?.toLowerCase().includes('setup') ||
-        row.feature?.toLowerCase().includes('onboard')
-      )
-      if (setupRow) hasSetupTime = true
+      // If no price row found, look for any row with a dollar amount
+      if (!competitorPrice) {
+        for (const row of pricingData) {
+          if (row.competitorValue) {
+            const compVal = String(row.competitorValue)
+            const match = compVal.match(/\$(\d+)/)
+            if (match) {
+              competitorPrice = match[1]
+              break
+            }
+          }
+        }
+      }
     }
 
     // 1. Price differentiator

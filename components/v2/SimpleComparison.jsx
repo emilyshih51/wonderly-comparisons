@@ -4,46 +4,29 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
     const comparisons = []
 
     // Add pricing comparisons from pricingData
+    // Sanity uses: featureName, wonderlyValue, competitorValue
     if (pricingData && pricingData.length > 0) {
       pricingData.forEach(item => {
+        const wonderlyVal = String(item.wonderlyValue || '')
+        const competitorVal = String(item.competitorValue || '')
+
         // Determine if Wonderly wins (free, unlimited, included, etc.)
         const wonderlyWins =
-          item.wonderly?.toLowerCase().includes('free') ||
-          item.wonderly?.toLowerCase().includes('unlimited') ||
-          item.wonderly?.toLowerCase().includes('included') ||
-          item.wonderly?.toLowerCase().includes('$0') ||
-          (item.competitor?.toLowerCase().includes('extra') ||
-           item.competitor?.toLowerCase().includes('pay per') ||
-           item.competitor?.match(/\$\d+/))
+          wonderlyVal.toLowerCase().includes('free') ||
+          wonderlyVal.toLowerCase().includes('unlimited') ||
+          wonderlyVal.toLowerCase().includes('included') ||
+          wonderlyVal.toLowerCase().includes('$0') ||
+          item.wonderlyValue === true ||
+          (competitorVal.toLowerCase().includes('extra') ||
+           competitorVal.toLowerCase().includes('pay per') ||
+           competitorVal.match(/\$\d+/))
 
         comparisons.push({
-          feature: item.feature,
-          wonderly: item.wonderly,
-          competitor: item.competitor,
+          feature: item.featureName,
+          wonderly: item.wonderlyValue === true ? 'Free' : item.wonderlyValue === false ? '✗' : wonderlyVal,
+          competitor: item.competitorValue === true ? '✓' : item.competitorValue === false ? '✗' : competitorVal,
           wonderlyWins: wonderlyWins
         })
-      })
-    }
-
-    // Add feature comparisons from featureData (limit to keep it simple)
-    if (featureData && featureData.length > 0) {
-      const featureItems = featureData.slice(0, 3) // Take first 3 for simplicity
-      featureItems.forEach(item => {
-        // Check if this feature isn't already in comparisons
-        if (!comparisons.find(c => c.feature === item.feature)) {
-          const wonderlyWins =
-            item.wonderly?.toLowerCase().includes('yes') ||
-            item.wonderly?.toLowerCase().includes('included') ||
-            item.wonderly?.toLowerCase().includes('unlimited') ||
-            item.wonderly === '✓'
-
-          comparisons.push({
-            feature: item.feature,
-            wonderly: item.wonderly,
-            competitor: item.competitor,
-            wonderlyWins: wonderlyWins
-          })
-        }
       })
     }
 

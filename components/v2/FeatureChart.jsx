@@ -1,30 +1,32 @@
 export default function FeatureChart({ competitorName, featureData }) {
   // Use Sanity feature data or defaults
+  // Sanity uses: featureName, wonderlyValue, competitorValue
   const getFeatures = () => {
     if (featureData && featureData.length > 0) {
-      return featureData.map(item => ({
-        feature: item.feature,
-        wonderly: item.wonderly,
-        competitor: item.competitor,
-        // Determine if it's a checkmark type or text type
-        isCheck: item.wonderly === '✓' || item.wonderly === '✗' ||
-                 item.wonderly?.toLowerCase() === 'yes' ||
-                 item.wonderly?.toLowerCase() === 'no'
-      }))
+      return featureData.map(item => {
+        const wonderlyVal = item.wonderlyValue
+        const competitorVal = item.competitorValue
+
+        return {
+          feature: item.featureName,
+          wonderly: wonderlyVal === true ? '✓' : wonderlyVal === false ? '✗' : String(wonderlyVal || ''),
+          competitor: competitorVal === true ? '✓' : competitorVal === false ? '✗' : String(competitorVal || ''),
+        }
+      })
     }
 
     // Default features if no Sanity data
     return [
-      { feature: "CRM & Contact Management", wonderly: "✓", competitor: "✓", isCheck: true },
-      { feature: "Email Marketing", wonderly: "✓", competitor: "✓", isCheck: true },
-      { feature: "Website Builder", wonderly: "✓", competitor: "Add-on", isCheck: false },
-      { feature: "Phone System", wonderly: "✓", competitor: "Add-on", isCheck: false },
-      { feature: "SMS/Text Messaging", wonderly: "✓", competitor: "✓", isCheck: true },
-      { feature: "Online Booking", wonderly: "✓", competitor: "✓", isCheck: true },
-      { feature: "Invoicing & Payments", wonderly: "✓", competitor: "✓", isCheck: true },
-      { feature: "Workflow Automation", wonderly: "✓", competitor: "Pro plan", isCheck: false },
-      { feature: "Reporting & Analytics", wonderly: "✓", competitor: "✓", isCheck: true },
-      { feature: "Mobile App", wonderly: "✓", competitor: "✓", isCheck: true },
+      { feature: "CRM & Contact Management", wonderly: "✓", competitor: "✓" },
+      { feature: "Email Marketing", wonderly: "✓", competitor: "✓" },
+      { feature: "Website Builder", wonderly: "✓", competitor: "Add-on" },
+      { feature: "Phone System", wonderly: "✓", competitor: "Add-on" },
+      { feature: "SMS/Text Messaging", wonderly: "✓", competitor: "✓" },
+      { feature: "Online Booking", wonderly: "✓", competitor: "✓" },
+      { feature: "Invoicing & Payments", wonderly: "✓", competitor: "✓" },
+      { feature: "Workflow Automation", wonderly: "✓", competitor: "Pro plan" },
+      { feature: "Reporting & Analytics", wonderly: "✓", competitor: "✓" },
+      { feature: "Mobile App", wonderly: "✓", competitor: "✓" },
     ]
   }
 
@@ -32,8 +34,9 @@ export default function FeatureChart({ competitorName, featureData }) {
 
   // Helper to render cell content
   const renderCell = (value, isWonderly = false) => {
-    const isPositive = value === '✓' || value?.toLowerCase() === 'yes' || value?.toLowerCase() === 'included'
-    const isNegative = value === '✗' || value?.toLowerCase() === 'no'
+    const strVal = String(value || '')
+    const isPositive = strVal === '✓' || strVal.toLowerCase() === 'yes' || strVal.toLowerCase() === 'included' || value === true
+    const isNegative = strVal === '✗' || strVal.toLowerCase() === 'no' || value === false
 
     if (isPositive) {
       return (
@@ -60,11 +63,11 @@ export default function FeatureChart({ competitorName, featureData }) {
     // Text value (like "Add-on", "Pro plan", etc.)
     return (
       <span className={`text-sm ${
-        value?.toLowerCase().includes('add-on') || value?.toLowerCase().includes('extra') || value?.toLowerCase().includes('pro')
+        strVal.toLowerCase().includes('add-on') || strVal.toLowerCase().includes('extra') || strVal.toLowerCase().includes('pro')
           ? 'text-amber-600 font-medium'
           : 'text-gray-600'
       }`}>
-        {value}
+        {strVal}
       </span>
     )
   }

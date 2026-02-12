@@ -1,5 +1,6 @@
 export default function KnockoutVisual({ competitorName, pricingData }) {
   // Try to extract competitor pricing from the data
+  // Sanity uses: featureName, wonderlyValue, competitorValue
   const extractCompetitorCost = () => {
     if (!pricingData || pricingData.length === 0) {
       return { monthlyPerSeat: 35, calculation: '$35/seat × 10 people × 24 months', total: 8400 }
@@ -7,16 +8,17 @@ export default function KnockoutVisual({ competitorName, pricingData }) {
 
     // Look for pricing-related rows
     const pricingRow = pricingData.find(row =>
-      row.feature?.toLowerCase().includes('price') ||
-      row.feature?.toLowerCase().includes('cost') ||
-      row.feature?.toLowerCase().includes('monthly') ||
-      row.feature?.toLowerCase().includes('starter') ||
-      row.feature?.toLowerCase().includes('base')
+      row.featureName?.toLowerCase().includes('price') ||
+      row.featureName?.toLowerCase().includes('cost') ||
+      row.featureName?.toLowerCase().includes('monthly') ||
+      row.featureName?.toLowerCase().includes('starter') ||
+      row.featureName?.toLowerCase().includes('base')
     )
 
-    if (pricingRow && pricingRow.competitor) {
+    if (pricingRow && pricingRow.competitorValue) {
       // Try to extract a number from the competitor value
-      const priceMatch = pricingRow.competitor.match(/\$(\d+)/)
+      const compVal = String(pricingRow.competitorValue)
+      const priceMatch = compVal.match(/\$(\d+)/)
       if (priceMatch) {
         const monthlyPerSeat = parseInt(priceMatch[1])
         const total = monthlyPerSeat * 10 * 24 // 10 people × 24 months
@@ -30,8 +32,9 @@ export default function KnockoutVisual({ competitorName, pricingData }) {
 
     // Fallback: look for any row with a dollar amount
     for (const row of pricingData) {
-      if (row.competitor) {
-        const priceMatch = row.competitor.match(/\$(\d+)/)
+      if (row.competitorValue) {
+        const compVal = String(row.competitorValue)
+        const priceMatch = compVal.match(/\$(\d+)/)
         if (priceMatch) {
           const monthlyPerSeat = parseInt(priceMatch[1])
           const total = monthlyPerSeat * 10 * 24
