@@ -1,13 +1,68 @@
 export default function SimpleComparison({ competitorName, pricingData, featureData }) {
-  // Combine key points into one simple comparison
-  const comparisons = [
-    { feature: "Platform cost", wonderly: "Free", competitor: "$14-79/seat/mo", wonderlyWins: true },
-    { feature: "Team seats", wonderly: "Unlimited", competitor: "Pay per seat", wonderlyWins: true },
-    { feature: "Setup time", wonderly: "~20 minutes", competitor: "Days to weeks", wonderlyWins: true },
-    { feature: "Hidden fees", wonderly: "None", competitor: "Add-ons extra", wonderlyWins: true },
-    { feature: "CRM + Website + Phone", wonderly: "All included", competitor: "Separate tools", wonderlyWins: true },
-    { feature: "AI features", wonderly: "$395/mo flat", competitor: "$39-399/mo", wonderlyWins: null },
-  ]
+  // Build comparison from actual Sanity data, with fallbacks
+  const buildComparisons = () => {
+    const comparisons = []
+
+    // Add pricing comparisons from pricingData
+    if (pricingData && pricingData.length > 0) {
+      pricingData.forEach(item => {
+        // Determine if Wonderly wins (free, unlimited, included, etc.)
+        const wonderlyWins =
+          item.wonderly?.toLowerCase().includes('free') ||
+          item.wonderly?.toLowerCase().includes('unlimited') ||
+          item.wonderly?.toLowerCase().includes('included') ||
+          item.wonderly?.toLowerCase().includes('$0') ||
+          (item.competitor?.toLowerCase().includes('extra') ||
+           item.competitor?.toLowerCase().includes('pay per') ||
+           item.competitor?.match(/\$\d+/))
+
+        comparisons.push({
+          feature: item.feature,
+          wonderly: item.wonderly,
+          competitor: item.competitor,
+          wonderlyWins: wonderlyWins
+        })
+      })
+    }
+
+    // Add feature comparisons from featureData (limit to keep it simple)
+    if (featureData && featureData.length > 0) {
+      const featureItems = featureData.slice(0, 3) // Take first 3 for simplicity
+      featureItems.forEach(item => {
+        // Check if this feature isn't already in comparisons
+        if (!comparisons.find(c => c.feature === item.feature)) {
+          const wonderlyWins =
+            item.wonderly?.toLowerCase().includes('yes') ||
+            item.wonderly?.toLowerCase().includes('included') ||
+            item.wonderly?.toLowerCase().includes('unlimited') ||
+            item.wonderly === '✓'
+
+          comparisons.push({
+            feature: item.feature,
+            wonderly: item.wonderly,
+            competitor: item.competitor,
+            wonderlyWins: wonderlyWins
+          })
+        }
+      })
+    }
+
+    // If no data from Sanity, use sensible defaults
+    if (comparisons.length === 0) {
+      return [
+        { feature: "Platform cost", wonderly: "Free", competitor: "$14-79/seat/mo", wonderlyWins: true },
+        { feature: "Team seats", wonderly: "Unlimited", competitor: "Pay per seat", wonderlyWins: true },
+        { feature: "Setup time", wonderly: "~20 minutes", competitor: "Days to weeks", wonderlyWins: true },
+        { feature: "Hidden fees", wonderly: "None", competitor: "Add-ons extra", wonderlyWins: true },
+        { feature: "CRM + Website + Phone", wonderly: "All included", competitor: "Separate tools", wonderlyWins: true },
+        { feature: "AI features", wonderly: "$395/mo flat", competitor: "Varies", wonderlyWins: null },
+      ]
+    }
+
+    return comparisons
+  }
+
+  const comparisons = buildComparisons()
 
   return (
     <div id="comparison" className="py-16 wonderly-bg scroll-mt-8">

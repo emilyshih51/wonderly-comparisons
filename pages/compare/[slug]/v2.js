@@ -27,7 +27,12 @@ export default function NarrativeComparisonPage({ competitor }) {
       <SimpleHeader />
 
       {/* 1. HEADLINE - Sets criteria in your favor */}
-      <NarrativeHero competitorName={competitor.name} />
+      <NarrativeHero
+        competitorName={competitor.name}
+        headline={competitor.heroHeadline}
+        subheadline={competitor.heroSubheadline}
+        headlineHighlight={competitor.heroHeadlineHighlight}
+      />
 
       {/* 2. KEY DIFFERENTIATORS - Claim, proof, knife twist */}
       <KeyDifferentiators
@@ -46,13 +51,13 @@ export default function NarrativeComparisonPage({ competitor }) {
       <ObjectionReframe competitorName={competitor.name} />
 
       {/* 5. KNOCKOUT VISUAL - One dramatic data point */}
-      <KnockoutVisual competitorName={competitor.name} />
+      <KnockoutVisual competitorName={competitor.name} pricingData={competitor.pricingTable} />
 
       {/* 6. TESTIMONIAL - Switcher story */}
       <SwitcherTestimonial competitorName={competitor.name} />
 
       {/* 7. FAQ - Hook-driven */}
-      <HookFAQ competitorName={competitor.name} />
+      <HookFAQ competitorName={competitor.name} faqs={competitor.faqs} />
 
       {/* 8. CTA - Zero risk */}
       <NarrativeCTA competitorName={competitor.name} />

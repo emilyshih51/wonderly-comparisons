@@ -1,4 +1,79 @@
-export default function NarrativeHero({ competitorName }) {
+export default function NarrativeHero({ competitorName, headline, subheadline, headlineHighlight }) {
+  // Function to auto-detect and highlight important parts of the headline
+  const renderHeadline = () => {
+    const text = headline || `You Shouldn't Have to Pay Per Seat Just to Run Your Business.`
+
+    // If explicit highlight is provided, use it
+    if (headlineHighlight && text.includes(headlineHighlight)) {
+      const parts = text.split(headlineHighlight)
+      return (
+        <>
+          {parts[0]}
+          <span className="wonderly-text">{headlineHighlight}</span>
+          {parts[1]}
+        </>
+      )
+    }
+
+    // Auto-detect: Look for text after em dash (—) - common pattern for key selling point
+    if (text.includes('—')) {
+      const parts = text.split('—')
+      return (
+        <>
+          {parts[0]}—<span className="wonderly-text">{parts[1]}</span>
+        </>
+      )
+    }
+
+    // Auto-detect: Look for phrases starting with "Without" (case insensitive)
+    const withoutMatch = text.match(/(Without [^,.]+)/i)
+    if (withoutMatch) {
+      const parts = text.split(withoutMatch[1])
+      return (
+        <>
+          {parts[0]}
+          <span className="wonderly-text">{withoutMatch[1]}</span>
+          {parts[1]}
+        </>
+      )
+    }
+
+    // Auto-detect: Look for "No " phrases like "No Hidden Fees"
+    const noMatch = text.match(/(No [A-Z][^,.]+)/i)
+    if (noMatch) {
+      const parts = text.split(noMatch[1])
+      return (
+        <>
+          {parts[0]}
+          <span className="wonderly-text">{noMatch[1]}</span>
+          {parts[1]}
+        </>
+      )
+    }
+
+    // Auto-detect: Look for "Free" as a standalone word
+    if (text.match(/\bFree\b/)) {
+      return text.split(/(\bFree\b)/).map((part, i) =>
+        part === 'Free' ? <span key={i} className="wonderly-text">Free</span> : part
+      )
+    }
+
+    // Auto-detect: Look for "Per Seat" as a phrase
+    if (text.match(/Per Seat/i)) {
+      return text.split(/(Per Seat)/i).map((part, i) =>
+        part.toLowerCase() === 'per seat' ? <span key={i} className="wonderly-text">{part}</span> : part
+      )
+    }
+
+    return text
+  }
+
+  // Generate dynamic subheadline based on competitor or use provided one
+  const getSubheadline = () => {
+    if (subheadline) return subheadline
+    return `${competitorName} charges you more every time your team grows. We think that's backwards. Wonderly is free for unlimited users—because growth shouldn't come with a bill.`
+  }
+
   return (
     <div className="wonderly-bg pt-16 pb-12">
       <div className="max-w-3xl mx-auto px-6 text-center">
@@ -7,18 +82,14 @@ export default function NarrativeHero({ competitorName }) {
           Wonderly vs. {competitorName}
         </p>
 
-        {/* Criteria-setting headline */}
+        {/* Criteria-setting headline - dynamic from Sanity */}
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-          You Shouldn't Have to Pay{' '}
-          <span className="wonderly-text">Per Seat</span>{' '}
-          Just to Run Your Business.
+          {renderHeadline()}
         </h1>
 
-        {/* Subheadline that twists the knife */}
+        {/* Subheadline - dynamic from Sanity */}
         <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-          {competitorName} charges you more every time your team grows.
-          We think that's backwards. Wonderly is free for unlimited users—because
-          growth shouldn't come with a bill.
+          {getSubheadline()}
         </p>
 
         {/* CTA buttons */}

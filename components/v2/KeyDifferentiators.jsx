@@ -1,25 +1,83 @@
 export default function KeyDifferentiators({ competitorName, pricingData }) {
-  // Extract key points from pricing data or use defaults
-  const differentiators = [
-    {
+  // Build differentiators from pricing data, with intelligent defaults
+  const buildDifferentiators = () => {
+    const differentiators = []
+
+    // Try to extract pricing info
+    let competitorPrice = null
+    let hasSeatPricing = false
+    let hasHiddenFees = false
+    let hasSetupTime = false
+
+    if (pricingData && pricingData.length > 0) {
+      // Look for price-related row
+      const priceRow = pricingData.find(row =>
+        row.feature?.toLowerCase().includes('price') ||
+        row.feature?.toLowerCase().includes('cost') ||
+        row.feature?.toLowerCase().includes('monthly') ||
+        row.feature?.toLowerCase().includes('starter')
+      )
+      if (priceRow && priceRow.competitor) {
+        const match = priceRow.competitor.match(/\$(\d+)/)
+        if (match) competitorPrice = match[1]
+      }
+
+      // Look for seat-related row
+      const seatRow = pricingData.find(row =>
+        row.feature?.toLowerCase().includes('seat') ||
+        row.feature?.toLowerCase().includes('user') ||
+        row.feature?.toLowerCase().includes('team')
+      )
+      if (seatRow) hasSeatPricing = true
+
+      // Look for hidden fees row
+      const feesRow = pricingData.find(row =>
+        row.feature?.toLowerCase().includes('fee') ||
+        row.feature?.toLowerCase().includes('hidden') ||
+        row.feature?.toLowerCase().includes('add-on')
+      )
+      if (feesRow) hasHiddenFees = true
+
+      // Look for setup/onboarding row
+      const setupRow = pricingData.find(row =>
+        row.feature?.toLowerCase().includes('setup') ||
+        row.feature?.toLowerCase().includes('onboard')
+      )
+      if (setupRow) hasSetupTime = true
+    }
+
+    // 1. Price differentiator
+    const priceKnife = competitorPrice
+      ? `${competitorName} starts at $${competitorPrice}/seat/month. Add 5 team members? That's $${parseInt(competitorPrice) * 5}/month before you've helped a single customer.`
+      : `${competitorName} starts at $14/seat/month. Add 5 team members? That's $70/month before you've helped a single customer.`
+
+    differentiators.push({
       claim: "We're actually free. They're not.",
       proof: "Wonderly's entire non-AI platform costs $0/month. No trial that expires. No 'starter' tier with missing features. Just... free.",
-      knifeTwist: `${competitorName} starts at $14/seat/month. Add 5 team members? That's $70/month before you've helped a single customer.`,
+      knifeTwist: priceKnife,
       icon: "💰"
-    },
-    {
+    })
+
+    // 2. Seats differentiator
+    differentiators.push({
       claim: "Your whole team can use it. No seat math required.",
       proof: "Invite your entire team—admin, sales, support, everyone. Unlimited seats on every plan, including free.",
       knifeTwist: `With ${competitorName}, you're constantly doing mental math: "Do they really need access?" Growth shouldn't require a spreadsheet.`,
       icon: "👥"
-    },
-    {
+    })
+
+    // 3. Setup differentiator
+    differentiators.push({
       claim: "Set up in 20 minutes. Not 20 days.",
       proof: "Import your contacts, connect your email, and you're running. Our customers are up and running in under 20 minutes, not weeks.",
       knifeTwist: `${competitorName}'s "guided onboarding" is code for "you'll need a few calls with our team before anything works."`,
       icon: "⚡"
-    }
-  ]
+    })
+
+    return differentiators
+  }
+
+  const differentiators = buildDifferentiators()
 
   return (
     <div className="py-16 bg-white">
