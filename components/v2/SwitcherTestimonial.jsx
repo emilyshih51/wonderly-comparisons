@@ -12,7 +12,7 @@ export default function SwitcherTestimonial({ competitorName }) {
           <div className="relative pl-6 pt-4">
             {/* Condensed quote */}
             <p className="text-gray-700 leading-relaxed mb-4">
-              We were paying <span className="font-semibold">${competitorName} $280/mo</span> for 8 people.
+              We were paying <span className="font-semibold">{competitorName} $280/mo</span> for 8 people.
               Then we switched to Wonderly—<span className="font-semibold">11 months later, still $0</span> for
               the core platform. The best part? My team actually uses it.
             </p>
