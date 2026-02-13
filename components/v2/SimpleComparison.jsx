@@ -1,16 +1,16 @@
 export default function SimpleComparison({ competitorName, pricingData, featureData }) {
   // Build comparison from actual Sanity data, with fallbacks
+  // Sanity uses: featureName, wonderlyValue, competitorValue
   const buildComparisons = () => {
     const comparisons = []
 
     // Add pricing comparisons from pricingData
-    // Sanity uses: featureName, wonderlyValue, competitorValue
     if (pricingData && pricingData.length > 0) {
       pricingData.forEach(item => {
         const wonderlyVal = String(item.wonderlyValue || '')
         const competitorVal = String(item.competitorValue || '')
 
-        // Determine if Wonderly wins (free, unlimited, included, etc.)
+        // Determine if Wonderly wins
         const wonderlyWins =
           wonderlyVal.toLowerCase().includes('free') ||
           wonderlyVal.toLowerCase().includes('unlimited') ||
@@ -35,7 +35,6 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
       return [
         { feature: "Platform cost", wonderly: "Free", competitor: "$14-79/seat/mo", wonderlyWins: true },
         { feature: "Team seats", wonderly: "Unlimited", competitor: "Pay per seat", wonderlyWins: true },
-        { feature: "Setup time", wonderly: "~20 minutes", competitor: "Days to weeks", wonderlyWins: true },
         { feature: "Hidden fees", wonderly: "None", competitor: "Add-ons extra", wonderlyWins: true },
         { feature: "CRM + Website + Phone", wonderly: "All included", competitor: "Separate tools", wonderlyWins: true },
         { feature: "AI features", wonderly: "$395/mo flat", competitor: "Varies", wonderlyWins: null },
@@ -51,13 +50,13 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
     <div id="comparison" className="py-16 wonderly-bg scroll-mt-8">
       <div className="max-w-2xl mx-auto px-6">
         <h2 className="text-sm font-semibold text-pink-500 uppercase tracking-wide mb-3 text-center">
-          The comparison
+          Feature overview
         </h2>
         <p className="text-3xl font-bold text-gray-900 mb-2 text-center">
-          The quick version.
+          Wonderly vs. {competitorName} in one glance.
         </p>
         <p className="text-gray-500 mb-10 text-center">
-          Everything you need to know in one glance.
+          The most important things you need to know.
         </p>
 
         {/* Simple comparison table */}
@@ -97,7 +96,7 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
                 )}
               </div>
               <div className="p-4 text-center flex items-center justify-center">
-                <span className="text-gray-500">{row.competitor}</span>
+                <span className="text-red-500 font-medium">{row.competitor}</span>
               </div>
             </div>
           ))}

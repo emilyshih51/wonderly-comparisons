@@ -1,5 +1,5 @@
-export default function FeatureChart({ competitorName, featureData, aiFeatures, onboarding }) {
-  // Combine all data sources into one comprehensive list
+export default function FeatureChart({ competitorName, featureData, aiFeatures }) {
+  // Combine feature and AI data (exclude onboarding - that goes to KnockoutVisual)
   // Sanity uses: featureName, wonderlyValue, competitorValue
   const getFeatures = () => {
     const allFeatures = []
@@ -31,20 +31,6 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures, 
       })
     }
 
-    // Add onboarding data
-    if (onboarding && onboarding.length > 0) {
-      onboarding.forEach(item => {
-        const wonderlyVal = item.wonderlyValue
-        const competitorVal = item.competitorValue
-        allFeatures.push({
-          feature: item.featureName,
-          wonderly: wonderlyVal === true ? '✓' : wonderlyVal === false ? '✗' : String(wonderlyVal || ''),
-          competitor: competitorVal === true ? '✓' : competitorVal === false ? '✗' : String(competitorVal || ''),
-          category: 'Setup'
-        })
-      })
-    }
-
     // If no Sanity data at all, use defaults
     if (allFeatures.length === 0) {
       return [
@@ -56,8 +42,7 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures, 
         { feature: "Online Booking", wonderly: "✓", competitor: "✓" },
         { feature: "Invoicing & Payments", wonderly: "✓", competitor: "✓" },
         { feature: "Workflow Automation", wonderly: "✓", competitor: "Pro plan" },
-        { feature: "Reporting & Analytics", wonderly: "✓", competitor: "✓" },
-        { feature: "Mobile App", wonderly: "✓", competitor: "✓" },
+        { feature: "Cost predictability", wonderly: "10/10", competitor: "Usage-based" },
       ]
     }
 
@@ -66,18 +51,16 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures, 
 
   const features = getFeatures()
 
-  // Helper to render cell content
-  const renderCell = (value, isWonderly = false) => {
+  // Helper to render Wonderly cell content
+  const renderWonderlyCell = (value) => {
     const strVal = String(value || '')
     const isPositive = strVal === '✓' || strVal.toLowerCase() === 'yes' || strVal.toLowerCase() === 'included' || strVal.toLowerCase() === 'free' || value === true
     const isNegative = strVal === '✗' || strVal.toLowerCase() === 'no' || strVal.toLowerCase() === 'not available' || value === false
 
     if (isPositive) {
       return (
-        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full ${
-          isWonderly ? 'bg-teal-100' : 'bg-gray-100'
-        }`}>
-          <svg className={`w-4 h-4 ${isWonderly ? 'text-teal-600' : 'text-gray-500'}`} fill="currentColor" viewBox="0 0 20 20">
+        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-teal-100">
+          <svg className="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
           </svg>
         </span>
@@ -94,31 +77,86 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures, 
       )
     }
 
-    // Text value (like "Add-on", "Pro plan", "$X/mo", etc.)
-    const isExtra = strVal.toLowerCase().includes('add-on') ||
-                    strVal.toLowerCase().includes('extra') ||
-                    strVal.toLowerCase().includes('pro') ||
-                    strVal.toLowerCase().includes('upgrade') ||
-                    strVal.match(/\$\d+/)
+    // Check if it's a score like "10/10" - add checkmark
+    if (strVal.match(/^\d+\/\d+$/)) {
+      return (
+        <span className="inline-flex items-center gap-1">
+          <span className="text-sm text-teal-600 font-semibold">{strVal}</span>
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-100">
+            <svg className="w-3 h-3 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          </span>
+        </span>
+      )
+    }
 
-    return (
-      <span className={`text-sm ${isExtra ? 'text-amber-600 font-medium' : 'text-gray-600'}`}>
-        {strVal}
-      </span>
-    )
+    // Regular text value
+    return <span className="text-sm text-teal-600 font-medium">{strVal}</span>
+  }
+
+  // Helper to render Competitor cell content (red themed)
+  const renderCompetitorCell = (value) => {
+    const strVal = String(value || '')
+    const isPositive = strVal === '✓' || strVal.toLowerCase() === 'yes' || strVal.toLowerCase() === 'included' || value === true
+    const isNegative = strVal === '✗' || strVal.toLowerCase() === 'no' || strVal.toLowerCase() === 'not available' || value === false
+
+    if (isPositive) {
+      return (
+        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100">
+          <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
+        </span>
+      )
+    }
+
+    if (isNegative) {
+      return (
+        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-50">
+          <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </span>
+      )
+    }
+
+    // Check if it's a pricing value like "$125-398/technician/month"
+    const pricingMatch = strVal.match(/(\$[\d,]+-?[\d,]*)(.*)/i)
+    if (pricingMatch) {
+      const price = pricingMatch[1]
+      const unit = pricingMatch[2]?.trim() || ''
+      return (
+        <div className="flex flex-col items-center">
+          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-50 mb-1">
+            <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </span>
+          <span className="text-sm text-red-500 font-medium">{price}</span>
+          {unit && <span className="text-xs text-red-400">{unit}</span>}
+        </div>
+      )
+    }
+
+    // Regular text - show in red
+    return <span className="text-sm text-red-500 font-medium">{strVal}</span>
   }
 
   return (
     <div className="py-16 bg-white">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-sm font-semibold text-pink-500 uppercase tracking-wide mb-3 text-center">
-          Feature by feature
+          Feature details
         </h2>
         <p className="text-3xl font-bold text-gray-900 mb-2 text-center">
           Everything you need. Nothing you don't.
         </p>
-        <p className="text-gray-500 mb-10 text-center">
-          See how Wonderly stacks up against {competitorName} on the features that matter.
+        <p className="text-gray-500 mb-4 text-center">
+          Here's a detailed look at Wonderly's features.
+        </p>
+        <p className="text-sm text-gray-400 mb-10 text-center">
+          We understand how unpredictable usage-based pricing can be—that's why our AI Tier is a flat rate of $395/mo.
         </p>
 
         {/* Feature comparison table */}
@@ -133,7 +171,7 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures, 
               <span className="block text-xs text-gray-400 mt-0.5">Free</span>
             </div>
             <div className="p-4 text-center">
-              <span className="font-bold text-gray-500">{competitorName}</span>
+              <span className="font-bold text-gray-400">{competitorName}</span>
               <span className="block text-xs text-gray-400 mt-0.5">Paid</span>
             </div>
           </div>
@@ -149,26 +187,19 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures, 
               <div className="p-4 pl-6 flex items-center">
                 <span className="font-medium text-gray-700">{row.feature}</span>
                 {row.category && (
-                  <span className="ml-2 text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded">
+                  <span className="ml-2 text-xs px-2 py-0.5 bg-purple-100 text-purple-600 rounded">
                     {row.category}
                   </span>
                 )}
               </div>
               <div className="p-4 flex items-center justify-center">
-                {renderCell(row.wonderly, true)}
+                {renderWonderlyCell(row.wonderly)}
               </div>
               <div className="p-4 flex items-center justify-center">
-                {renderCell(row.competitor, false)}
+                {renderCompetitorCell(row.competitor)}
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Bottom note */}
-        <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500">
-            <span className="text-amber-600 font-medium">Orange text</span> = requires upgrade or additional cost with {competitorName}
-          </p>
         </div>
       </div>
     </div>

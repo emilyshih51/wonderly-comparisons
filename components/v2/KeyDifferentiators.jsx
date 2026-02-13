@@ -1,73 +1,25 @@
 export default function KeyDifferentiators({ competitorName, pricingData }) {
-  // Build differentiators from pricing data, with intelligent defaults
-  // Sanity uses: featureName, wonderlyValue, competitorValue
-  const buildDifferentiators = () => {
-    const differentiators = []
-
-    // Try to extract pricing info
-    let competitorPrice = null
-
-    if (pricingData && pricingData.length > 0) {
-      // Look for price-related row
-      const priceRow = pricingData.find(row =>
-        row.featureName?.toLowerCase().includes('price') ||
-        row.featureName?.toLowerCase().includes('cost') ||
-        row.featureName?.toLowerCase().includes('monthly') ||
-        row.featureName?.toLowerCase().includes('starter')
-      )
-      if (priceRow && priceRow.competitorValue) {
-        const compVal = String(priceRow.competitorValue)
-        const match = compVal.match(/\$(\d+)/)
-        if (match) competitorPrice = match[1]
-      }
-
-      // If no price row found, look for any row with a dollar amount
-      if (!competitorPrice) {
-        for (const row of pricingData) {
-          if (row.competitorValue) {
-            const compVal = String(row.competitorValue)
-            const match = compVal.match(/\$(\d+)/)
-            if (match) {
-              competitorPrice = match[1]
-              break
-            }
-          }
-        }
-      }
-    }
-
-    // 1. Price differentiator
-    const priceKnife = competitorPrice
-      ? `${competitorName} starts at $${competitorPrice}/seat/month. Add 5 team members? That's $${parseInt(competitorPrice) * 5}/month before you've helped a single customer.`
-      : `${competitorName} starts at $14/seat/month. Add 5 team members? That's $70/month before you've helped a single customer.`
-
-    differentiators.push({
-      claim: "We're actually free. They're not.",
+  // Build differentiators with direct, punchy claims
+  const differentiators = [
+    {
+      claim: `Wonderly is Free. ${competitorName} is Not.`,
       proof: "Wonderly's entire non-AI platform costs $0/month. No trial that expires. No 'starter' tier with missing features. Just... free.",
-      knifeTwist: priceKnife,
+      knifeTwist: `${competitorName} starts charging from day one. Every feature, every user—it all adds up fast.`,
       icon: "💰"
-    })
-
-    // 2. Seats differentiator
-    differentiators.push({
-      claim: "Your whole team can use it. No seat math required.",
+    },
+    {
+      claim: `${competitorName} charges you per seat. We don't.`,
       proof: "Invite your entire team—admin, sales, support, everyone. Unlimited seats on every plan, including free.",
       knifeTwist: `With ${competitorName}, you're constantly doing mental math: "Do they really need access?" Growth shouldn't require a spreadsheet.`,
       icon: "👥"
-    })
-
-    // 3. Setup differentiator
-    differentiators.push({
-      claim: "Set up in 20 minutes. Not 20 days.",
+    },
+    {
+      claim: "Wonderly sets up in 20 mins. Not 20 days.",
       proof: "Import your contacts, connect your email, and you're running. Our customers are up and running in under 20 minutes, not weeks.",
       knifeTwist: `${competitorName}'s "guided onboarding" is code for "you'll need a few calls with our team before anything works."`,
       icon: "⚡"
-    })
-
-    return differentiators
-  }
-
-  const differentiators = buildDifferentiators()
+    }
+  ]
 
   return (
     <div className="py-16 bg-white">

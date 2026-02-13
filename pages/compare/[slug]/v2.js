@@ -53,14 +53,17 @@ export default function NarrativeComparisonPage({ competitor }) {
         competitorName={competitor.name}
         featureData={competitor.featureComparison}
         aiFeatures={competitor.aiFeatures}
-        onboarding={competitor.onboarding}
       />
 
       {/* 4. OBJECTION REFRAME - Flip their strength */}
       <ObjectionReframe competitorName={competitor.name} />
 
       {/* 5. KNOCKOUT VISUAL - One dramatic data point */}
-      <KnockoutVisual competitorName={competitor.name} pricingData={competitor.pricingTable} />
+      <KnockoutVisual
+        competitorName={competitor.name}
+        pricingData={competitor.pricingTable}
+        onboarding={competitor.onboarding}
+      />
 
       {/* 6. TESTIMONIAL - Switcher story */}
       <SwitcherTestimonial competitorName={competitor.name} />

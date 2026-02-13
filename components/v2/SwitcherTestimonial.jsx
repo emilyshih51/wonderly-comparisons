@@ -24,7 +24,7 @@ export default function SwitcherTestimonial({ competitorName }) {
               </div>
               <div>
                 <p className="font-semibold text-gray-900 text-sm">Marcus Rodriguez</p>
-                <p className="text-gray-500 text-xs">Switched from {competitorName} in 2024</p>
+                <p className="text-gray-500 text-xs">Owner, Rodriguez Financial Advisory</p>
               </div>
             </div>
           </div>
