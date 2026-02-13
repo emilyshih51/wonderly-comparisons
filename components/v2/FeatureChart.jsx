@@ -95,7 +95,7 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures }
     return <span className="text-sm text-teal-600 font-medium">{strVal}</span>
   }
 
-  // Helper to render Competitor cell content (red themed)
+  // Helper to render Competitor cell content (red themed with X)
   const renderCompetitorCell = (value) => {
     const strVal = String(value || '')
     const isPositive = strVal === '✓' || strVal.toLowerCase() === 'yes' || strVal.toLowerCase() === 'included' || value === true
@@ -121,11 +121,21 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures }
       )
     }
 
-    // Check if it's a pricing value like "$125-398/technician/month"
-    const pricingMatch = strVal.match(/(\$[\d,]+-?[\d,]*)(.*)/i)
+    // Check if it's a pricing value like "$125-398/technician/month" or "$90-560/mo"
+    const pricingMatch = strVal.match(/(\$[\d,]+-?[\d,]*)\/?(.*)$/i)
     if (pricingMatch) {
       const price = pricingMatch[1]
-      const unit = pricingMatch[2]?.trim() || ''
+      let unit = pricingMatch[2]?.trim() || ''
+
+      // Convert /mo to "per month"
+      if (unit === 'mo' || unit === 'month') {
+        unit = 'per month'
+      } else if (unit.includes('/mo')) {
+        unit = unit.replace('/mo', ' per month')
+      } else if (unit.includes('month')) {
+        unit = unit.replace('month', 'per month')
+      }
+
       return (
         <div className="flex flex-col items-center">
           <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-50 mb-1">
@@ -134,13 +144,22 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures }
             </svg>
           </span>
           <span className="text-sm text-red-500 font-medium">{price}</span>
-          {unit && <span className="text-xs text-red-400">{unit}</span>}
+          {unit && <span className="text-[10px] text-red-400">{unit}</span>}
         </div>
       )
     }
 
-    // Regular text - show in red
-    return <span className="text-sm text-red-500 font-medium">{strVal}</span>
+    // Regular text - show with X and in red
+    return (
+      <div className="flex flex-col items-center">
+        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-50 mb-1">
+          <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </span>
+        <span className="text-sm text-red-500 font-medium">{strVal}</span>
+      </div>
+    )
   }
 
   return (
@@ -149,14 +168,11 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures }
         <h2 className="text-sm font-semibold text-pink-500 uppercase tracking-wide mb-3 text-center">
           Feature details
         </h2>
-        <p className="text-3xl font-bold text-gray-900 mb-2 text-center">
-          Everything you need. Nothing you don't.
-        </p>
-        <p className="text-gray-500 mb-4 text-center">
+        <p className="text-3xl font-bold text-gray-900 mb-4 text-center">
           Here's a detailed look at Wonderly's features.
         </p>
-        <p className="text-sm text-gray-400 mb-10 text-center">
-          We understand how unpredictable usage-based pricing can be—that's why our AI Tier is a flat rate of $395/mo.
+        <p className="text-sm text-gray-500 mb-10 text-center max-w-2xl mx-auto">
+          We know unpredictable pricing is stressful—that's why ALL AI features (Receptionist, Text, Automations) are included in one flat rate of $395/mo after the first 14 days. No surprises, ever.
         </p>
 
         {/* Feature comparison table */}

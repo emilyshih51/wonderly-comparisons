@@ -134,42 +134,52 @@ export default function KnockoutVisual({ competitorName, pricingData, onboarding
           </div>
         </div>
 
-        {/* Setup time comparison */}
-        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden mb-8">
-          <div className="grid grid-cols-3 bg-gray-50 border-b border-gray-100">
-            <div className="p-4 pl-6">
-              <span className="font-semibold text-gray-700">Setup time</span>
-            </div>
-            <div className="p-4 text-center">
-              <span className="font-bold wonderly-text">Wonderly</span>
-            </div>
-            <div className="p-4 text-center">
-              <span className="font-bold text-gray-400">{competitorName}</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-3">
-            <div className="p-4 pl-6">
-              <span className="text-gray-600">Time to get started</span>
-            </div>
-            <div className="p-4 text-center">
-              <span className="text-teal-600 font-semibold">{setup.wonderly}</span>
-              <span className="ml-2 inline-flex items-center justify-center w-5 h-5 bg-teal-100 rounded-full">
-                <svg className="w-3 h-3 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              </span>
-            </div>
-            <div className="p-4 text-center">
-              <span className="text-red-500 font-medium">{setup.competitor}</span>
-            </div>
-          </div>
-        </div>
-
         {/* Bottom callout */}
-        <div className="text-center">
+        <div className="text-center mb-12">
           <p className="text-2xl font-bold text-gray-900">
             That's <span className="wonderly-text">${formattedTotal}</span> you could spend on marketing, hiring, or literally anything else.
           </p>
+        </div>
+
+        {/* Visual setup time comparison */}
+        <div className="mt-8">
+          <div className="text-center mb-6">
+            <h3 className="text-xl font-bold text-gray-900">Time to get started</h3>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Wonderly setup */}
+            <div className="bg-white rounded-2xl p-6 border border-teal-100 text-center">
+              <p className="text-sm font-semibold text-teal-600 uppercase tracking-wide mb-3">
+                Wonderly
+              </p>
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <span className="text-4xl font-bold text-teal-600">{setup.wonderly}</span>
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-teal-100">
+                  <svg className="w-5 h-5 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </span>
+              </div>
+              <p className="text-gray-500 text-sm">Import contacts, connect email, done.</p>
+            </div>
+
+            {/* Competitor setup */}
+            <div className="bg-white rounded-2xl p-6 border border-gray-200 text-center">
+              <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                {competitorName}
+              </p>
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <span className="text-4xl font-bold text-red-500">{setup.competitor}</span>
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-50">
+                  <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </span>
+              </div>
+              <p className="text-gray-500 text-sm">Onboarding calls, training, configuration.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

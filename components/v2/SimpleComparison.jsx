@@ -46,6 +46,53 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
 
   const comparisons = buildComparisons()
 
+  // Render Wonderly cell with checkmark
+  const renderWonderlyCell = (value) => {
+    const strVal = String(value || '')
+
+    // Check if it's a score like "10/10" - show with checkmark
+    if (strVal.match(/^\d+\/\d+$/)) {
+      return (
+        <span className="inline-flex items-center gap-1">
+          <span className="font-semibold text-gray-700">{strVal}</span>
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-100">
+            <svg className="w-3 h-3 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          </span>
+        </span>
+      )
+    }
+
+    // Regular value with checkmark
+    return (
+      <span className="inline-flex items-center gap-1">
+        <span className="font-semibold text-teal-600">{strVal}</span>
+        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-100">
+          <svg className="w-3 h-3 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
+        </span>
+      </span>
+    )
+  }
+
+  // Render competitor cell with X
+  const renderCompetitorCell = (value) => {
+    const strVal = String(value || '')
+
+    return (
+      <span className="inline-flex items-center gap-1">
+        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-50">
+          <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </span>
+        <span className="font-medium text-red-500">{strVal}</span>
+      </span>
+    )
+  }
+
   return (
     <div id="comparison" className="py-16 wonderly-bg scroll-mt-8">
       <div className="max-w-2xl mx-auto px-6">
@@ -84,27 +131,14 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
                 <span className="font-medium text-gray-700 text-sm">{row.feature}</span>
               </div>
               <div className="p-4 text-center flex items-center justify-center">
-                <span className={`font-semibold ${row.wonderlyWins ? 'text-teal-600' : 'text-gray-700'}`}>
-                  {row.wonderly}
-                </span>
-                {row.wonderlyWins && (
-                  <span className="ml-2 w-5 h-5 bg-teal-100 rounded-full flex items-center justify-center">
-                    <svg className="w-3 h-3 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </span>
-                )}
+                {renderWonderlyCell(row.wonderly)}
               </div>
               <div className="p-4 text-center flex items-center justify-center">
-                <span className="text-red-500 font-medium">{row.competitor}</span>
+                {renderCompetitorCell(row.competitor)}
               </div>
             </div>
           ))}
         </div>
-
-        <p className="text-center text-sm text-gray-400 mt-6">
-          * Pricing as of 2024. Check {competitorName}'s website for current rates.
-        </p>
       </div>
     </div>
   )
