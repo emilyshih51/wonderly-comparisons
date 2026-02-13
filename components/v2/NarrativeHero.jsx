@@ -76,7 +76,7 @@ export default function NarrativeHero({ competitorName, headline, subheadline, h
 
   return (
     <div className="wonderly-bg pt-16 pb-12">
-      <div className="max-w-3xl mx-auto px-6 text-center">
+      <div className="max-w-4xl mx-auto px-6 text-center">
         {/* Small label */}
         <p className="text-sm text-gray-500 mb-4 tracking-wide uppercase">
           Wonderly vs. {competitorName}

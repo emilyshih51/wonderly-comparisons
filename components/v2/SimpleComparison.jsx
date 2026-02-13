@@ -10,6 +10,12 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
         const wonderlyVal = String(item.wonderlyValue || '')
         const competitorVal = String(item.competitorValue || '')
 
+        // Skip redundant rows - "Per-technician pricing" is redundant when we already show actual per-tech costs
+        if (competitorVal.toLowerCase().includes('per-technician pricing') ||
+            competitorVal.toLowerCase().includes('per technician pricing')) {
+          return // Skip this row
+        }
+
         comparisons.push({
           feature: item.featureName,
           wonderly: item.wonderlyValue === true ? 'Free' : item.wonderlyValue === false ? '✗' : wonderlyVal,
