@@ -112,14 +112,6 @@ export default function HookFAQ({ competitorName, faqs: sanityFaqs }) {
           ))}
         </div>
 
-        {/* Still have questions */}
-        <div className="mt-10 text-center p-6 bg-gray-50 rounded-xl">
-          <p className="text-gray-600 mb-3">Still have questions?</p>
-          <a href="#" className="text-pink-500 font-medium hover:underline">
-            Chat with us →
-          </a>
-          <span className="text-gray-400 text-sm ml-2">(Yes, that's free too)</span>
-        </div>
       </div>
     </div>
   )

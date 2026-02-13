@@ -6,7 +6,7 @@ import SimpleComparison from '../../../components/v2/SimpleComparison'
 import FeatureChart from '../../../components/v2/FeatureChart'
 import ObjectionReframe from '../../../components/v2/ObjectionReframe'
 import KnockoutVisual from '../../../components/v2/KnockoutVisual'
-import SwitcherTestimonial from '../../../components/v2/SwitcherTestimonial'
+// Testimonial removed per feedback
 import NarrativeCTA from '../../../components/v2/NarrativeCTA'
 import HookFAQ from '../../../components/v2/HookFAQ'
 
@@ -65,10 +65,7 @@ export default function NarrativeComparisonPage({ competitor }) {
         onboarding={competitor.onboarding}
       />
 
-      {/* 6. TESTIMONIAL - Switcher story */}
-      <SwitcherTestimonial competitorName={competitor.name} />
-
-      {/* 7. FAQ - Hook-driven */}
+      {/* 6. FAQ - Hook-driven */}
       <HookFAQ competitorName={competitor.name} faqs={competitor.faqs} />
 
       {/* 8. CTA - Zero risk */}

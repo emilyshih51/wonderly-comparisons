@@ -163,7 +163,7 @@ export default function KnockoutVisual({ competitorName, pricingData, onboarding
                   </svg>
                 </span>
               </div>
-              <p className="text-gray-500 text-sm">Import contacts, connect email, done.</p>
+              <p className="text-gray-500 text-sm">Most users know if it works for them in 20 mins.</p>
             </div>
 
             {/* Competitor setup */}
