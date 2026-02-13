@@ -127,9 +127,12 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures }
       const price = pricingMatch[1]
       let unit = pricingMatch[2]?.trim() || ''
 
-      // Convert /mo to "per month"
+      // Convert units to readable format - check longer patterns first!
       if (unit === 'mo' || unit === 'month') {
         unit = 'per month'
+      } else if (unit.includes('/month')) {
+        // Check /month BEFORE /mo to avoid "monthnth" bug
+        unit = unit.replace('/month', ' per month')
       } else if (unit.includes('/mo')) {
         unit = unit.replace('/mo', ' per month')
       } else if (unit.includes('month')) {

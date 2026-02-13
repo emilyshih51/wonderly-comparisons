@@ -144,7 +144,9 @@ export default function KnockoutVisual({ competitorName, pricingData, onboarding
         {/* Visual setup time comparison */}
         <div className="mt-8">
           <div className="text-center mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Time to get started</h3>
+            <p className="text-sm font-semibold text-pink-500 uppercase tracking-wide">
+              Time to get started
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">

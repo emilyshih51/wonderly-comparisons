@@ -10,22 +10,10 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
         const wonderlyVal = String(item.wonderlyValue || '')
         const competitorVal = String(item.competitorValue || '')
 
-        // Determine if Wonderly wins
-        const wonderlyWins =
-          wonderlyVal.toLowerCase().includes('free') ||
-          wonderlyVal.toLowerCase().includes('unlimited') ||
-          wonderlyVal.toLowerCase().includes('included') ||
-          wonderlyVal.toLowerCase().includes('$0') ||
-          item.wonderlyValue === true ||
-          (competitorVal.toLowerCase().includes('extra') ||
-           competitorVal.toLowerCase().includes('pay per') ||
-           competitorVal.match(/\$\d+/))
-
         comparisons.push({
           feature: item.featureName,
           wonderly: item.wonderlyValue === true ? 'Free' : item.wonderlyValue === false ? '✗' : wonderlyVal,
           competitor: item.competitorValue === true ? '✓' : item.competitorValue === false ? '✗' : competitorVal,
-          wonderlyWins: wonderlyWins
         })
       })
     }
@@ -33,11 +21,10 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
     // If no data from Sanity, use sensible defaults
     if (comparisons.length === 0) {
       return [
-        { feature: "Platform cost", wonderly: "Free", competitor: "$14-79/seat/mo", wonderlyWins: true },
-        { feature: "Team seats", wonderly: "Unlimited", competitor: "Pay per seat", wonderlyWins: true },
-        { feature: "Hidden fees", wonderly: "None", competitor: "Add-ons extra", wonderlyWins: true },
-        { feature: "CRM + Website + Phone", wonderly: "All included", competitor: "Separate tools", wonderlyWins: true },
-        { feature: "AI features", wonderly: "$395/mo flat", competitor: "Varies", wonderlyWins: null },
+        { feature: "Platform cost", wonderly: "Free", competitor: "$14-79/seat/mo" },
+        { feature: "Team seats", wonderly: "Unlimited", competitor: "Pay per seat" },
+        { feature: "Hidden fees", wonderly: "None", competitor: "Add-ons extra" },
+        { feature: "AI features", wonderly: "$395/mo flat", competitor: "Varies" },
       ]
     }
 
@@ -50,11 +37,11 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
   const renderWonderlyCell = (value) => {
     const strVal = String(value || '')
 
-    // Check if it's a score like "10/10" - show with checkmark
+    // Check if it's a score like "10/10" - show in GREEN with checkmark
     if (strVal.match(/^\d+\/\d+$/)) {
       return (
         <span className="inline-flex items-center gap-1">
-          <span className="font-semibold text-gray-700">{strVal}</span>
+          <span className="font-semibold text-teal-600">{strVal}</span>
           <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-100">
             <svg className="w-3 h-3 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -77,19 +64,53 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
     )
   }
 
-  // Render competitor cell with X
+  // Render competitor cell with X on top, value below, small unit text
   const renderCompetitorCell = (value) => {
     const strVal = String(value || '')
 
+    // Check if it's a pricing value like "$125-398/technician/month"
+    const pricingMatch = strVal.match(/^(\$[\d,]+-?[\d,]*)\/(.+)$/i)
+    if (pricingMatch) {
+      const price = pricingMatch[1]
+      const unit = pricingMatch[2]?.trim() || ''
+
+      return (
+        <div className="flex flex-col items-center">
+          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-50 mb-1">
+            <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </span>
+          <span className="text-sm text-red-500 font-medium">{price}</span>
+          <span className="text-[10px] text-red-400">{unit}</span>
+        </div>
+      )
+    }
+
+    // Check if it's a score like "3/10" - show X and value in red
+    if (strVal.match(/^\d+\/\d+$/)) {
+      return (
+        <span className="inline-flex items-center gap-1">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-50">
+            <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </span>
+          <span className="font-medium text-red-500">{strVal}</span>
+        </span>
+      )
+    }
+
+    // Regular text - show X on top, text below
     return (
-      <span className="inline-flex items-center gap-1">
-        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-50">
-          <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+      <div className="flex flex-col items-center">
+        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-50 mb-1">
+          <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         </span>
-        <span className="font-medium text-red-500">{strVal}</span>
-      </span>
+        <span className="text-sm text-red-500 font-medium">{strVal}</span>
+      </div>
     )
   }
 
