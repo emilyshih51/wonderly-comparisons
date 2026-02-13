@@ -10,12 +10,6 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
         const wonderlyVal = String(item.wonderlyValue || '')
         const competitorVal = String(item.competitorValue || '')
 
-        // Skip redundant rows - "Per-technician pricing" is redundant when we already show actual per-tech costs
-        if (competitorVal.toLowerCase().includes('per-technician pricing') ||
-            competitorVal.toLowerCase().includes('per technician pricing')) {
-          return // Skip this row
-        }
-
         comparisons.push({
           feature: item.featureName,
           wonderly: item.wonderlyValue === true ? 'Free' : item.wonderlyValue === false ? '✗' : wonderlyVal,
@@ -93,16 +87,16 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
       )
     }
 
-    // Check if it's a score like "3/10" - show X and value in red
+    // Check if it's a score like "3/10" - show value and X on right (matching Wonderly's checkmark position)
     if (strVal.match(/^\d+\/\d+$/)) {
       return (
         <span className="inline-flex items-center gap-1">
+          <span className="font-medium text-red-500">{strVal}</span>
           <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-50">
             <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
           </span>
-          <span className="font-medium text-red-500">{strVal}</span>
         </span>
       )
     }

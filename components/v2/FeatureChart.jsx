@@ -91,6 +91,20 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures }
       )
     }
 
+    // Check if it's "AI tier" - show checkmark with small "AI Tier" text underneath
+    if (strVal.toLowerCase().includes('ai tier')) {
+      return (
+        <div className="flex flex-col items-center">
+          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-teal-100">
+            <svg className="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          </span>
+          <span className="text-[10px] text-teal-500 mt-0.5">AI Tier</span>
+        </div>
+      )
+    }
+
     // Regular text value
     return <span className="text-sm text-teal-600 font-medium">{strVal}</span>
   }
