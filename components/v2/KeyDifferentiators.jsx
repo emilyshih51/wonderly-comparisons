@@ -1,25 +1,27 @@
-export default function KeyDifferentiators({ competitorName, pricingData }) {
-  // Build differentiators with direct, punchy claims
-  const differentiators = [
+export default function KeyDifferentiators({ competitorName, pricingData, keyDifferentiators: sanityDifferentiators }) {
+  // Default differentiators (fallback if Sanity has none)
+  const defaultDifferentiators = [
     {
       claim: `Wonderly is Free. ${competitorName} is Not.`,
       proof: "Wonderly's entire non-AI platform costs $0/month. No trial that expires. No 'starter' tier with missing features. Just... free.",
-      knifeTwist: `${competitorName} starts charging from day one. Every feature, every user—it all adds up fast.`,
-      icon: "💰"
+      knifeTwist: `${competitorName} starts charging from day one. Every feature, every user—it all adds up fast.`
     },
     {
       claim: `${competitorName} charges you per seat. We don't.`,
       proof: "Invite your entire team—admin, sales, support, everyone. Unlimited seats on every plan, including free.",
-      knifeTwist: `With ${competitorName}, you're constantly doing mental math: "Do they really need access?" Growth shouldn't require a spreadsheet.`,
-      icon: "👥"
+      knifeTwist: `With ${competitorName}, you're constantly doing mental math: "Do they really need access?" Growth shouldn't require a spreadsheet.`
     },
     {
       claim: "Wonderly sets up in 20 mins. Not 20 days.",
       proof: "Import your contacts, connect your email, and you're running. Our customers are up and running in under 20 minutes, not weeks.",
-      knifeTwist: `${competitorName}'s "guided onboarding" is code for "you'll need a few calls with our team before anything works."`,
-      icon: "⚡"
+      knifeTwist: `${competitorName}'s "guided onboarding" is code for "you'll need a few calls with our team before anything works."`
     }
   ]
+
+  // Use Sanity differentiators if available (and has at least 3), otherwise use defaults
+  const differentiators = (sanityDifferentiators && sanityDifferentiators.length >= 3)
+    ? sanityDifferentiators.slice(0, 3)
+    : defaultDifferentiators
 
   return (
     <div className="py-16 bg-white">

@@ -39,6 +39,7 @@ export default function NarrativeComparisonPage({ competitor }) {
       <KeyDifferentiators
         competitorName={competitor.name}
         pricingData={competitor.pricingTable}
+        keyDifferentiators={competitor.keyDifferentiators}
       />
 
       {/* 3. COMPARISON CHART - Simple validation layer */}
