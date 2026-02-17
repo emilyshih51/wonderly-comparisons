@@ -57,7 +57,10 @@ export default function NarrativeComparisonPage({ competitor }) {
       />
 
       {/* 4. OBJECTION REFRAME - Flip their strength */}
-      <ObjectionReframe competitorName={competitor.name} />
+      <ObjectionReframe
+        competitorName={competitor.name}
+        elephantInRoom={competitor.elephantInRoom}
+      />
 
       {/* 5. KNOCKOUT VISUAL - One dramatic data point */}
       <KnockoutVisual
