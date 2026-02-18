@@ -26,7 +26,7 @@ export default function KeyDifferentiators({ competitorName, pricingData, keyDif
   return (
     <div className="py-16 bg-white">
       <div className="max-w-3xl mx-auto px-6">
-        <h2 className="text-sm font-semibold text-pink-500 uppercase tracking-wide mb-3">
+        <h2 className="text-sm font-semibold text-pink-500 tracking-wide mb-3">
           Why people switch
         </h2>
         <p className="text-3xl font-bold text-gray-900 mb-12">

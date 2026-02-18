@@ -21,7 +21,7 @@ export default function ObjectionReframe({ competitorName, elephantInRoom }) {
 
           <div className="relative">
             {/* Label */}
-            <p className="text-pink-500 text-sm font-semibold uppercase tracking-wide mb-4">
+            <p className="text-pink-500 text-sm font-semibold tracking-wide mb-4">
               The elephant in the room
             </p>
 

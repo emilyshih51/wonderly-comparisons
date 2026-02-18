@@ -182,7 +182,7 @@ export default function FeatureChart({ competitorName, featureData, aiFeatures }
   return (
     <div className="py-16 bg-white">
       <div className="max-w-3xl mx-auto px-6">
-        <h2 className="text-sm font-semibold text-pink-500 uppercase tracking-wide mb-3 text-center">
+        <h2 className="text-sm font-semibold text-pink-500 tracking-wide mb-3 text-center">
           Feature details
         </h2>
         <p className="text-3xl font-bold text-gray-900 mb-4 text-center">

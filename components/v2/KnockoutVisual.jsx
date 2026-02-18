@@ -79,7 +79,7 @@ export default function KnockoutVisual({ competitorName, pricingData, onboarding
     <div className="py-16 wonderly-bg">
       <div className="max-w-3xl mx-auto px-6">
         <div className="text-center mb-10">
-          <p className="text-sm font-semibold text-pink-500 uppercase tracking-wide mb-3">
+          <p className="text-sm font-semibold text-pink-500 tracking-wide mb-3">
             The math doesn't lie
           </p>
           <h2 className="text-3xl font-bold text-gray-900">
@@ -91,7 +91,7 @@ export default function KnockoutVisual({ competitorName, pricingData, onboarding
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Wonderly side */}
           <div className="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-2xl p-8 border border-teal-100 text-center">
-            <p className="text-sm font-semibold text-teal-600 uppercase tracking-wide mb-4">
+            <p className="text-sm font-semibold text-teal-600 tracking-wide mb-4">
               Wonderly
             </p>
             <div className="text-6xl md:text-7xl font-bold text-teal-600 mb-4">
@@ -113,7 +113,7 @@ export default function KnockoutVisual({ competitorName, pricingData, onboarding
 
           {/* Competitor side */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200 text-center">
-            <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
+            <p className="text-sm font-semibold text-gray-500 tracking-wide mb-4">
               {competitorName}
             </p>
             <div className="text-6xl md:text-7xl font-bold text-red-500 mb-4">
@@ -144,7 +144,7 @@ export default function KnockoutVisual({ competitorName, pricingData, onboarding
         {/* Visual setup time comparison */}
         <div className="mt-8">
           <div className="text-center mb-6">
-            <p className="text-sm font-semibold text-pink-500 uppercase tracking-wide">
+            <p className="text-sm font-semibold text-pink-500 tracking-wide">
               Time to get started
             </p>
           </div>
@@ -152,7 +152,7 @@ export default function KnockoutVisual({ competitorName, pricingData, onboarding
           <div className="grid md:grid-cols-2 gap-6">
             {/* Wonderly setup */}
             <div className="bg-white rounded-2xl p-6 border border-teal-100 text-center">
-              <p className="text-sm font-semibold text-teal-600 uppercase tracking-wide mb-3">
+              <p className="text-sm font-semibold text-teal-600 tracking-wide mb-3">
                 Wonderly
               </p>
               <div className="flex items-center justify-center gap-3 mb-3">
@@ -168,7 +168,7 @@ export default function KnockoutVisual({ competitorName, pricingData, onboarding
 
             {/* Competitor setup */}
             <div className="bg-white rounded-2xl p-6 border border-gray-200 text-center">
-              <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+              <p className="text-sm font-semibold text-gray-500 tracking-wide mb-3">
                 {competitorName}
               </p>
               <div className="flex items-center justify-center gap-3 mb-3">

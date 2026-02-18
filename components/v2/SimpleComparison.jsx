@@ -117,7 +117,7 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
   return (
     <div id="comparison" className="py-16 wonderly-bg scroll-mt-8">
       <div className="max-w-2xl mx-auto px-6">
-        <h2 className="text-sm font-semibold text-pink-500 uppercase tracking-wide mb-3 text-center">
+        <h2 className="text-sm font-semibold text-pink-500 tracking-wide mb-3 text-center">
           Feature overview
         </h2>
         <p className="text-3xl font-bold text-gray-900 mb-2 text-center">

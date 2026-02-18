@@ -73,7 +73,7 @@ export default function HookFAQ({ competitorName, faqs: sanityFaqs }) {
     <div className="py-16 bg-white">
       <div className="max-w-2xl mx-auto px-6">
         {/* Pre-header */}
-        <p className="text-sm font-semibold text-pink-500 uppercase tracking-wide mb-3 text-center">
+        <p className="text-sm font-semibold text-pink-500 tracking-wide mb-3 text-center">
           FAQs
         </p>
 

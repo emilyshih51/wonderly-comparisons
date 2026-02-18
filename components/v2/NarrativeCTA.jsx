@@ -3,7 +3,7 @@ export default function NarrativeCTA({ competitorName }) {
     <div className="py-16 wonderly-bg">
       <div className="max-w-2xl mx-auto px-6 text-center">
         {/* Pre-header */}
-        <p className="text-sm font-semibold text-pink-500 uppercase tracking-wide mb-4">
+        <p className="text-sm font-semibold text-pink-500 tracking-wide mb-4">
           Ready to switch?
         </p>
 
