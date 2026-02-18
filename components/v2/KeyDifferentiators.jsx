@@ -13,7 +13,7 @@ export default function KeyDifferentiators({ competitorName, pricingData, keyDif
     },
     {
       claim: "Wonderly sets up in 20 mins. Not 20 days.",
-      proof: "Import your contacts, connect your email, and you're running. Our customers are up and running in under 20 minutes, not weeks.",
+      proof: "Import your contacts, connect your email, and you're live. No onboarding calls, no implementation specialists, no waiting.",
       knifeTwist: `${competitorName}'s "guided onboarding" is code for "you'll need a few calls with our team before anything works."`
     }
   ]
@@ -30,7 +30,7 @@ export default function KeyDifferentiators({ competitorName, pricingData, keyDif
           Why people switch
         </h2>
         <p className="text-3xl font-bold text-gray-900 mb-12">
-          Three things {competitorName} customers wish they'd known sooner.
+          Three facts {competitorName} customers wish they'd known sooner.
         </p>
 
         <div className="space-y-12">

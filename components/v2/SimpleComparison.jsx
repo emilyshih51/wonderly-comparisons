@@ -64,9 +64,27 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
     )
   }
 
-  // Render competitor cell with X on top, value below, small unit text
-  const renderCompetitorCell = (value) => {
+  // Render competitor cell - show checkmark if same as Wonderly or positive, X if negative
+  const renderCompetitorCell = (value, wonderlyValue) => {
     const strVal = String(value || '')
+    const wonderlyStr = String(wonderlyValue || '').toLowerCase()
+
+    // If competitor matches Wonderly (e.g., both "Unlimited"), show neutral checkmark
+    if (strVal.toLowerCase() === wonderlyStr ||
+        (strVal.toLowerCase() === 'unlimited' && wonderlyStr === 'unlimited') ||
+        (strVal.toLowerCase() === 'yes' && wonderlyStr === 'yes') ||
+        (strVal.toLowerCase() === 'included' && wonderlyStr === 'included')) {
+      return (
+        <span className="inline-flex items-center gap-1">
+          <span className="font-medium text-gray-600">{strVal}</span>
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-100">
+            <svg className="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          </span>
+        </span>
+      )
+    }
 
     // Check if it's a pricing value like "$125-398/technician/month"
     const pricingMatch = strVal.match(/^(\$[\d,]+-?[\d,]*)\/(.+)$/i)
@@ -155,7 +173,7 @@ export default function SimpleComparison({ competitorName, pricingData, featureD
                 {renderWonderlyCell(row.wonderly)}
               </div>
               <div className="p-4 text-center flex items-center justify-center">
-                {renderCompetitorCell(row.competitor)}
+                {renderCompetitorCell(row.competitor, row.wonderly)}
               </div>
             </div>
           ))}
