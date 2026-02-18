@@ -1,14 +1,13 @@
 import { getCompetitor, getAllCompetitorSlugs } from '../../../lib/sanity'
-import Header from '../../../components/Header'
-import HeroSection from '../../../components/HeroSection'
-import TableSection from '../../../components/TableSection'
-import FAQSection from '../../../components/FAQSection'
-import BottomLine from '../../../components/BottomLine'
-import WhyChooseSection from '../../../components/WhyChooseSection'
-import RelatedComparisons from '../../../components/RelatedComparisons'
-import TrustSection from '../../../components/TrustSection'
-import FinalCTA from '../../../components/FinalCTA'
-import TestimonialsMarquee from '../../../components/TestimonialsMarquee'
+import SimpleHeader from '../../../components/v2/SimpleHeader'
+import NarrativeHero from '../../../components/v2/NarrativeHero'
+import KeyDifferentiators from '../../../components/v2/KeyDifferentiators'
+import SimpleComparison from '../../../components/v2/SimpleComparison'
+import FeatureChart from '../../../components/v2/FeatureChart'
+import ObjectionReframe from '../../../components/v2/ObjectionReframe'
+import KnockoutVisual from '../../../components/v2/KnockoutVisual'
+import NarrativeCTA from '../../../components/v2/NarrativeCTA'
+import HookFAQ from '../../../components/v2/HookFAQ'
 
 export default function ComparisonPage({ competitor }) {
   if (!competitor) {
@@ -23,109 +22,72 @@ export default function ComparisonPage({ competitor }) {
   }
 
   return (
-    <div className="min-h-screen wonderly-bg">
-      {/* Header with logo and CTA */}
-      <Header />
+    <div className="min-h-screen">
+      {/* Sticky header */}
+      <SimpleHeader />
 
-      {/* Hero Section with tabs */}
-      <HeroSection
+      {/* 1. HEADLINE - Sets criteria in your favor */}
+      <NarrativeHero
         competitorName={competitor.name}
         headline={competitor.heroHeadline}
         subheadline={competitor.heroSubheadline}
         headlineHighlight={competitor.heroHeadlineHighlight}
       />
 
-      {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      {/* 2. KEY DIFFERENTIATORS - Claim, proof, knife twist */}
+      <KeyDifferentiators
+        competitorName={competitor.name}
+        pricingData={competitor.pricingTable}
+        keyDifferentiators={competitor.keyDifferentiators}
+      />
 
-        {/* 1. Pricing Table */}
-        {competitor.pricingTable && competitor.pricingTable.length > 0 && (
-          <TableSection
-            id="pricing"
-            title="Pricing"
-            data={competitor.pricingTable}
-            competitorName={competitor.name}
-          />
-        )}
+      {/* 3. COMPARISON CHART - Simple validation layer */}
+      <SimpleComparison
+        competitorName={competitor.name}
+        pricingData={competitor.pricingTable}
+        featureData={competitor.featureComparison}
+      />
 
-        {/* 2. Why Choose Section - right after pricing */}
-        <WhyChooseSection competitorName={competitor.name} />
+      {/* 3b. FEATURE CHART - Detailed feature comparison */}
+      <FeatureChart
+        competitorName={competitor.name}
+        featureData={competitor.featureComparison}
+        aiFeatures={competitor.aiFeatures}
+      />
 
-        {/* 3. Feature Comparison */}
-        {competitor.featureComparison && competitor.featureComparison.length > 0 && (
-          <TableSection
-            id="features"
-            title="Features"
-            data={competitor.featureComparison}
-            competitorName={competitor.name}
-          />
-        )}
+      {/* 4. OBJECTION REFRAME - Flip their strength */}
+      <ObjectionReframe
+        competitorName={competitor.name}
+        elephantInRoom={competitor.elephantInRoom}
+      />
 
-        {/* 4. Trust Section - 15,000+ businesses - before AI Features */}
-        <TrustSection />
+      {/* 5. KNOCKOUT VISUAL - One dramatic data point */}
+      <KnockoutVisual
+        competitorName={competitor.name}
+        pricingData={competitor.pricingTable}
+        onboarding={competitor.onboarding}
+      />
 
-        {/* 5. AI Features - with subtitle */}
-        {competitor.aiFeatures && competitor.aiFeatures.length > 0 && (
-          <TableSection
-            id="ai-features"
-            title="AI Features"
-            subtitle="Wonderly AI tier: $395/mo (annual) or $495/mo (monthly)"
-            data={competitor.aiFeatures}
-            competitorName={competitor.name}
-          />
-        )}
+      {/* 6. FAQ - Hook-driven */}
+      <HookFAQ competitorName={competitor.name} faqs={competitor.faqs} />
 
-        {/* 6. Onboarding */}
-        {competitor.onboarding && competitor.onboarding.length > 0 && (
-          <TableSection
-            id="onboarding"
-            title="Setup & Onboarding"
-            data={competitor.onboarding}
-            competitorName={competitor.name}
-          />
-        )}
+      {/* 7. CTA - Zero risk */}
+      <NarrativeCTA competitorName={competitor.name} />
 
-        {/* 7. Testimonials Marquee - scrolling customer reviews */}
-        <TestimonialsMarquee />
-
-        {/* 8. Bottom Line - light pink stats */}
-        <BottomLine />
-
-        {/* 8. FAQs */}
-        {competitor.faqs && competitor.faqs.length > 0 && (
-          <FAQSection
-            faqs={competitor.faqs}
-            competitorName={competitor.name}
-          />
-        )}
-
-        {/* 9. Related Comparisons */}
-        <RelatedComparisons currentCompetitor={competitor.name} />
-
-        {/* 10. Final CTA - "Wonderly is 100% free" - LAST before footer */}
-        <FinalCTA />
-      </div>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <div className="text-xl font-bold wonderly-text mb-2">Wonderly</div>
-          <p className="text-gray-400 text-sm">The all-in-one platform for growing businesses.</p>
+      {/* Simple footer */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <div className="text-2xl font-bold wonderly-text mb-3">Wonderly</div>
+          <p className="text-gray-400 mb-6">
+            The all-in-one platform for growing service businesses.
+          </p>
+          <div className="flex justify-center gap-6 text-sm text-gray-500">
+            <a href="#" className="hover:text-white transition">Privacy</a>
+            <a href="#" className="hover:text-white transition">Terms</a>
+            <a href="#" className="hover:text-white transition">Contact</a>
+          </div>
         </div>
       </footer>
-
-      {/* Version switcher - for A/B comparison */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <a
-          href={`/compare/${competitor.slug?.current || competitor.slug}/v2`}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm rounded-full shadow-lg hover:bg-gray-800 transition"
-        >
-          <span>View Narrative Version</span>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-          </svg>
-        </a>
-      </div>
     </div>
   )
 }
