@@ -1,4 +1,4 @@
-export default function KeyDifferentiators({ competitorName, pricingData, keyDifferentiators: sanityDifferentiators }) {
+export default function KeyDifferentiators({ competitorName, pricingData, keyDifferentiators: sanityDifferentiators, keyDifferentiatorsHeadline }) {
   // Default differentiators (fallback if Sanity has none)
   const defaultDifferentiators = [
     {
@@ -30,7 +30,7 @@ export default function KeyDifferentiators({ competitorName, pricingData, keyDif
           Why people switch
         </h2>
         <p className="text-3xl font-bold text-gray-900 mb-12">
-          Three facts that don't show up on {competitorName}'s page.
+          {keyDifferentiatorsHeadline || `Three facts that don't show up on ${competitorName}'s page.`}
         </p>
 
         <div className="space-y-12">

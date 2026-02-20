@@ -39,6 +39,7 @@ export default function ComparisonPage({ competitor }) {
         competitorName={competitor.name}
         pricingData={competitor.pricingTable}
         keyDifferentiators={competitor.keyDifferentiators}
+        keyDifferentiatorsHeadline={competitor.keyDifferentiatorsHeadline}
       />
 
       {/* 3. COMPARISON CHART - Simple validation layer */}
