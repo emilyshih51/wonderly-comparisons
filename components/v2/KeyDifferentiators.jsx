@@ -30,7 +30,7 @@ export default function KeyDifferentiators({ competitorName, pricingData, keyDif
           Why people switch
         </h2>
         <p className="text-3xl font-bold text-gray-900 mb-12">
-          Three facts {competitorName} customers wish they'd known sooner.
+          Three facts that don't show up on {competitorName}'s page.
         </p>
 
         <div className="space-y-12">
